@@ -28,22 +28,9 @@
   <meta name="HandheldFriendly" content="true">
   <title>AdFormance Home Page</title>
   <link rel="stylesheet" href="css/theme.min.css">
-  <!--<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">-->
 
   <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
-  <!--
-  <style>
-    @font-face {
-      font-family: 'Fira Sans';
-      font-style: normal;
-      font-weight: 700;
-      font-display: swap;
-      src: local(''),
-        url('./fonts/FiraSans-Bold.woff2') format('woff2'),
-    }
-  </style>-->
-
 
   <style>
     body {
@@ -112,9 +99,18 @@
     }
   </style>
 
+
+
 </head>
 
 <body data-bs-spy="scroll" data-bs-target="#navScroll">
+
+  <script src="js/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 800, // values from 0 to 3000, with step 50ms
+    });
+  </script>
 
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MRZGWMG3" height="0" width="0"
@@ -125,7 +121,7 @@
     <div class="container">
       <a class="navbar-brand pe-4 fs-4" href="https://adformance.io">
         <img src="img/adformance-high-resolution-logo-transparent.png" class="logo-img"
-          style="margin-left: 20px; margin-top: 3px; width: 70px; height: 70px;" alt="adformance logo"/>
+          style="margin-left: 20px; margin-top: 3px; width: 70px; height: 70px;" alt="adformance logo" />
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -377,8 +373,11 @@
 
           <div class="col-lg-6 d-flex align-items-center">
             <div class="shadow ratio ratio-16x9 rounded bg-cover bp-center w-100" data-aos="fade-left"
-              style="background-image: url(img/dublin_photo.jpg);--bs-aspect-ratio: 50%;" alt="dublin photo">
+              data-bg="img/dublin_photo.jpg" loading="lazy" style="--bs-aspect-ratio: 50%;" alt="dublin photo">
             </div>
+            <!--<div class="shadow ratio ratio-16x9 rounded bg-cover bp-center w-100" data-aos="fade-left"
+              style="background-image: url(img/dublin_photo.jpg);--bs-aspect-ratio: 50%;" alt="dublin photo" loading="lazy">
+            </div>-->
           </div>
 
         </div>
@@ -837,10 +836,22 @@
     </div>
   </footer>
   <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="js/aos.js"></script>
+  <!-- Add this script at the end of body -->
   <script>
-    AOS.init({
-      duration: 800, // values from 0 to 3000, with step 50ms
+    document.addEventListener("DOMContentLoaded", function () {
+      const lazyBackgrounds = document.querySelectorAll("[data-bg]");
+
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.style.backgroundImage = `url(${img.dataset.bg})`;
+            observer.unobserve(img);
+          }
+        });
+      });
+
+      lazyBackgrounds.forEach(img => imageObserver.observe(img));
     });
   </script>
 
